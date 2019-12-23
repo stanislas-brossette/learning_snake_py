@@ -5,14 +5,29 @@ from enums import direction
 from State import State, Transition
 
 class Game:
-    def __init__(self, width, length, n_apples, snake_x, snake_y, d=direction.right):
-        self.world_ = Map(width, length, n_apples)
-        self.snake_ = Snake(snake_x, snake_y, d)
-        self.world_.update(self.snake_)
-        self.display()
+    def __init__(self, width, length, n_apples, snake_x0, snake_y0, d=direction.right, render=False):
+        self.width_ = width
+        self.length_ = length
+        self.n_apples_ = n_apples
+        self.snake_x0_ = snake_x0
+        self.snake_y0_ = snake_y0
+        self.direction_ = d
+        self.render_ = render
+        self.reset()
 
-    def display(self):
-        self.world_.display()
+        if self.render_:
+            self.render()
+
+    def reset(self):
+        self.world_ = Map(self.width_, self.length_, self.n_apples_, self.render_)
+        self.snake_ = Snake(self.snake_x0_, self.snake_y0_, self.direction_)
+        self.world_.update(self.snake_)
+        s = State(self.snake_, self.world_)
+        s_array = s.to_array()
+        return s_array
+
+    def render(self):
+        self.world_.render()
 
     def step(self, d):
         t = Transition()
@@ -22,8 +37,11 @@ class Game:
         self.snake_.move_forward(self.world_)
         self.world_.update(self.snake_)
         t.next_state_ = State(self.snake_, self.world_)
-        t.score_ = self.snake_.length_
-        t.display()
+        t.score_ = self.snake_.length_ - 1
+        if self.render_:
+            self.render()
+            #t.render()
+        return (t.next_state_.to_array(), t.score_, not self.snake_.isAlive(), t.direction_)
 
     def get_direction_input(self):
         with Input(keynames='curses') as input_generator:

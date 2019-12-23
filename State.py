@@ -21,7 +21,7 @@ class State:
         res = np.array([statusToFloat(si) for si in res_status])
         return res
 
-    def display(self):
+    def render(self):
         print(self.to_string())
 
 class Transition:
@@ -57,12 +57,8 @@ class Transition:
         return res
 
 
-    def display(self):
+    def render(self):
         s = self.to_string()
         print(s)
-        #self.state_.display()
-        #print("self.direction_:{}".format(self.direction_))
-        #self.next_state_.display()
-        #print("self.score_:{}".format(self.score_))
 
         

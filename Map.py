@@ -1,18 +1,37 @@
 import numpy as np
-from enums import status, statusToChar
+import time
+from enums import *
 from Snake import Snake
+from matplotlib import pyplot as plt
 
 
 class Map:
     """ Map in which the snake evolves"""
-    def __init__(self, height, width, n_apples):
+    def __init__(self, height, width, n_apples, render=False):
         self.height_ = height 
         self.width_ = width
         self.n_apples_ = n_apples
         self.apples_ = np.zeros((self.n_apples_,2))
+        self.render_ = render
         self.resetContent()
         self.randomizeApples()
         self.resetContent()
+        if self.render_:
+            contentFloat = np.array([[statusToFloat(si) for si in ri] for ri in self.content_])
+            plt.ion()
+            self.fig_ = plt.figure()
+            self.ax_ = self.fig_.add_subplot(111)
+            self.im_ = self.ax_.imshow(contentFloat)
+            self.fig_.canvas.draw()
+            plt.pause(0.001)
+
+    def render(self):
+        if self.render_:
+            contentFloat = np.array([[statusToFloat(si) for si in ri] for ri in self.content_])
+            self.im_.set_data(contentFloat)
+            self.fig_.canvas.draw()
+            plt.pause(0.001)
+
 
     def randomizeApples(self):
         self.apples_ = np.zeros((self.n_apples_,2))
@@ -48,13 +67,14 @@ class Map:
         for apple in self.apples_:
             self.content_[apple[0].astype(int), apple[1].astype(int)] = status.apple
 
-    def display(self):
-        sToPrint = ''
-        for row in self.content_:
-            for e in row:
-                sToPrint = sToPrint + statusToChar(e)
-            sToPrint = sToPrint + '\n'
-        print(sToPrint)
+    #def render(self):
+    #    sToPrint = ''
+    #    for row in self.content_:
+    #        for e in row:
+    #            sToPrint = sToPrint + statusToChar(e)
+    #        sToPrint = sToPrint + '\n'
+    #    print(sToPrint)
+
 
     def update(self, snake):
         self.resetContent()

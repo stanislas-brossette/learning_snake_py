@@ -5,9 +5,11 @@ from curtsies import Input
 
 from Game import Game
 
-game = Game(30,30,4,15,15)
+print("direction(0):{}".format(direction(0)))
+
+game = Game(30,30,4,15,15,render=True)
 while(game.snake_.isAlive()):
     d = game.get_direction_input()
     game.step(d)
-    game.display()
+    game.render()
 
