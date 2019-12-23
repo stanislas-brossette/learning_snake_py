@@ -12,6 +12,7 @@ class Snake:
         self.direction_ = d
         self.length_ = 1
         self.alive_ = True
+        self.view_distance_ = 4
 
     def isAlive(self):
         return self.alive_
@@ -38,6 +39,7 @@ class Snake:
                 or nextPosContent == status.snake
                 or nextPosContent == status.snake_head):
             self.alive_ = False
+            self.length_ = 0
 
     def turn(self, d):
         if isinstance(d,direction):
@@ -51,5 +53,20 @@ class Snake:
             n = n.next_
             print(n.pos_)
 
-        
-        
+    def get_view(self, world):
+        vd = self.view_distance_
+        view_size = 2*vd + 1
+        view = np.full((view_size, view_size), status.empty)
+        for i in range(view_size):
+            for j in range(view_size):
+                x = self.head_.pos_[0] - vd + i
+                y = self.head_.pos_[1] - vd + j
+                if(x < 0 or y < 0
+                        or x >= world.height_
+                        or y >= world.width_):
+                    view[i,j] = status.obstacle
+                else:
+                    view[i,j] = world.content_[x,y]
+        return view
+
+

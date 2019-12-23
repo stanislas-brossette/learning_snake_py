@@ -39,3 +39,15 @@ def directionToArray(d):
         return np.array([1,0])
     else:
         print("ERROR in directionToArray")
+
+def directionToString(d):
+    if d == direction.left:
+        return 'left '
+    elif d == direction.right:
+        return 'right'
+    elif d == direction.up:
+        return 'up   '
+    elif d == direction.down:
+        return 'down '
+    else:
+        print("ERROR in directionToString")
