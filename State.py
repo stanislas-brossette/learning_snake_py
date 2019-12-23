@@ -1,6 +1,7 @@
+import numpy as np
 from Map import Map
 from Snake import Snake
-from enums import status, statusToChar, directionToString
+from enums import *
 
 class State:
     def __init__(self, snake, world):
@@ -14,7 +15,12 @@ class State:
                 sToPrint = sToPrint + statusToChar(e)
             sToPrint = sToPrint + '\n'
         return sToPrint
-        
+
+    def to_array(self):
+        res_status = self.view_.flatten()
+        res = np.array([statusToFloat(si) for si in res_status])
+        return res
+
     def display(self):
         print(self.to_string())
 
@@ -45,6 +51,11 @@ class Transition:
                 res = res + emptyLargePad
             res = res + split_next_state[i] + '\n'
         return res
+
+    def to_array(self):
+        res = np.concatenate((self.state_.to_array(), directionToArray(self.direction_), self.next_state_.to_array(), [self.score_]))
+        return res
+
 
     def display(self):
         s = self.to_string()

@@ -22,6 +22,21 @@ def statusToChar(e):
     else:
         print("ERROR in statusToChar")
 
+def statusToFloat(e):
+    if e == status.empty:
+        return 0.0
+    elif e == status.obstacle:
+        return 0.25
+    elif e == status.apple:
+        return 1.0
+    elif e == status.snake:
+        return 0.5
+    elif e == status.snake_head:
+        return 0.75
+    else:
+        print("ERROR in statusToChar")
+
+
 class direction(Enum):
     left = 0
     right = 1
