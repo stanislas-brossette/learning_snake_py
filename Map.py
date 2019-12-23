@@ -17,6 +17,7 @@ class Map:
         self.randomizeApples()
         self.resetContent()
         if self.render_:
+            plt.close('all')
             contentFloat = np.array([[statusToFloat(si) for si in ri] for ri in self.content_])
             plt.ion()
             self.fig_ = plt.figure()

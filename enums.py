@@ -66,3 +66,15 @@ def directionToString(d):
         return 'down '
     else:
         print("ERROR in directionToString")
+
+def oppositeDirection(d):
+    if d == direction.left:
+        return direction.right
+    elif d == direction.right:
+        return direction.left
+    elif d == direction.up:
+        return direction.down
+    elif d == direction.down:
+        return 'down '
+    else:
+        print("ERROR in directionToString")

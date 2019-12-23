@@ -33,14 +33,14 @@ class Game:
         t = Transition()
         t.state_ = State(self.snake_, self.world_)
         t.direction_ = d
-        self.snake_.direction_ = d
+        self.snake_.turn(d)
         self.snake_.move_forward(self.world_)
         self.world_.update(self.snake_)
         t.next_state_ = State(self.snake_, self.world_)
         t.score_ = self.snake_.length_ - 1
         if self.render_:
             self.render()
-            #t.render()
+        #print("not self.snake_.isAlive():{}".format(not self.snake_.isAlive()))
         return (t.next_state_.to_array(), t.score_, not self.snake_.isAlive(), t.direction_)
 
     def get_direction_input(self):

@@ -1,5 +1,5 @@
 import numpy as np
-from enums import direction, status, directionToArray
+from enums import *
 
 class Node:
     def __init__(self, pos, next=None):
@@ -38,11 +38,15 @@ class Snake:
         elif(nextPosContent == status.obstacle
                 or nextPosContent == status.snake
                 or nextPosContent == status.snake_head):
+            #print('die')
             self.alive_ = False
             self.length_ = 0
 
     def turn(self, d):
         if isinstance(d,direction):
+            if d == oppositeDirection(self.direction_):
+                self.alive_ = False
+                self.length_ = 0
             self.direction_ = d
 
     def display(self):
