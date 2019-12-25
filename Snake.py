@@ -12,16 +12,20 @@ class Snake:
         self.direction_ = d
         self.length_ = 1
         self.alive_ = True
-        self.view_distance_ = 4
+        self.view_distance_ = 2
 
     def isAlive(self):
         return self.alive_
 
     def move_forward(self, world):
+        if not self.alive_:
+            return -100
+        score_move = 0
         prevPos = self.head_.pos_
         nextPos = prevPos + directionToArray(self.direction_)
         nextPosContent = world.content_[nextPos[0], nextPos[1]]
         if(nextPosContent == status.empty):
+            score_move = -0.1
             self.head_.pos_ = prevPos + directionToArray(self.direction_)
             n = self.head_
             while(n.next_):
@@ -30,6 +34,7 @@ class Snake:
                 prevPos = savePos
                 n = n.next_
         elif(nextPosContent == status.apple):
+            score_move = 100
             previousHead = Node(self.head_.pos_, self.head_.next_)
             self.head_.next_ = previousHead
             self.head_.pos_ = nextPos
@@ -38,9 +43,11 @@ class Snake:
         elif(nextPosContent == status.obstacle
                 or nextPosContent == status.snake
                 or nextPosContent == status.snake_head):
+            score_move = -100
             #print('die')
             self.alive_ = False
             self.length_ = 0
+        return score_move
 
     def turn(self, d):
         if isinstance(d,direction):

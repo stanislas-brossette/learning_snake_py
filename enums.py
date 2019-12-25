@@ -24,15 +24,15 @@ def statusToChar(e):
 
 def statusToFloat(e):
     if e == status.empty:
-        return 0.0
+        return 0.75
     elif e == status.obstacle:
-        return 0.25
+        return 0.0
     elif e == status.apple:
         return 1.0
     elif e == status.snake:
-        return 0.5
+        return 0.0
     elif e == status.snake_head:
-        return 0.75
+        return 0.5
     else:
         print("ERROR in statusToChar")
 
@@ -75,6 +75,6 @@ def oppositeDirection(d):
     elif d == direction.up:
         return direction.down
     elif d == direction.down:
-        return 'down '
+        return direction.up
     else:
         print("ERROR in directionToString")

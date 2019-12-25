@@ -24,15 +24,19 @@ parser.add_argument('--log-interval', type=int, default=10, metavar='N',
 args = parser.parse_args()
 
 
-env = Game(20,20,1,10,10,render=False)
+env = Game(10,10,1,10,10,render=False)
 torch.manual_seed(args.seed)
+
+vd = env.snake_.view_distance_
+view_size = vd * 2 + 1
+input_size = view_size * view_size + 3
 
 
 class Policy(nn.Module):
     def __init__(self):
         super(Policy, self).__init__()
-        self.affine1 = nn.Linear(81, 128)
-        self.dropout = nn.Dropout(p=0.6)
+        self.affine1 = nn.Linear(input_size, 128)
+        self.dropout = nn.Dropout(p=0.2)
         self.affine2 = nn.Linear(128, 4)
 
         self.saved_log_probs = []
@@ -83,18 +87,19 @@ def main():
     running_reward = 10
     for i_episode in count(1):
         print("\ni_episode:{}".format(i_episode))
-        if i_episode%100 == 98:
+        if i_episode%500 == 0:
             env.render_ = True
         else:
             env.render_ = False
         t=0
         while(t<=1):
             state, ep_reward = env.reset(), 0
-            for t in range(1, 10000):  # Don't infinite loop while learning
+            for t in range(1, 500):  # Don't infinite loop while learning
                 action = select_action(state)
                 state, reward, done, _ = env.step(direction(action))
-                if args.render:
-                    env.render()
+                #if env.render_:
+                #    print("state:{}".format(state))
+                #    print("reward:{}".format(reward))
                 policy.rewards.append(reward)
                 ep_reward += reward
                 if done:
